@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSankalp - Powered by CompileX</title>
+    
+    <!-- 1. Load External Scripts/Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght(100..900)&display=swap" rel="stylesheet">
+    
+    <!-- 2. Configure Tailwind (JAVASCRIPT) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#1f2937', 
+                        'accent-yellow': '#f59e0b', /* Gold/Amber Accent */
+                        'bg-dark': '#0f172a', /* Slate-900 */
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 24px 0 rgba(0, 0, 0, 0.3)',
+                        'coc-glow': '0 0 12px rgba(241, 196, 15, 0.8)',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        shine: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                         /* Floating animation 1 (slow, large movement) */
+                        'float-1': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(0deg)' },
+                            '50%': { transform: 'translate3d(20vw, -10vh, -50px) rotate(5deg)' },
+                            '100%': { transform: 'translate3d(-10vw, 20vh, 0) rotate(-10deg)' },
+                        },
+                        /* Floating animation 2 (faster, smaller movement) */
+                        'float-2': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(10deg)' },
+                            '40%': { transform: 'translate3d(-15vw, 15vh, 50px) rotate(-5deg)' },
+                            '80%': { transform: 'translate3d(25vw, -5vh, 0) rotate(15deg)' },
+                            '100%': { transform: 'translate3d(0, 0, 0) rotate(10deg)' },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                        'shine': 'shine 1.5s ease infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 3. Custom CSS Styles -->
+    <style>
+        :root {
+            --primary-navy: #1f2937;
+            --accent-yellow: #f59e0b;
+            --coc-gold: #f1c40f;
+            --bright-gold: #FFD700;
+        }
+
+        /* Essential Custom DARK Glassmorphism Styles for Cards/Header */
+        .glass-card {
+            /* Dark background, light border */
+            background-color: rgba(30, 41, 59, 0.7); /* Slate-800 transparency */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.3); /* Transparent gold border */
+            border-radius: 16px;
+            transform-style: preserve-3d;
+        }
+
+        /* Shine Effect on Feature Tiles */
+        .tile-shine-on-hover:hover {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 30%, rgba(245, 158, 11, 0.15) 50%, rgba(30, 41, 59, 0.7) 70%);
+            background-size: 400% 400%;
+            animation: shine 1.5s ease infinite;
+            border-color: var(--accent-yellow); 
+        }
+
+        /* Ensure smooth transitions on interactive elements */
+        .tile-interactive {
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .tile-interactive:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3); 
+        }
+
+        /* Custom CSS for Hero Title Glow */
+        .hero-title-glow {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.1), 
+                0 0 20px rgba(245, 158, 11, 0.7); /* Stronger gold glow on dark theme */
+        }
+        
+        /* Multicolor Sankalp Styling */
+        .multi-color-sankalp {
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)); 
+        }
+        .s-1 { color: #f59e0b; } /* Yellow */
+        .s-2 { color: #f97316; } /* Orange */
+        .s-3 { color: #ec4899; } /* Magenta */
+        .s-4 { color: #8b5cf6; } /* Violet */
+        .s-5 { color: #06b6d4; } /* Cyan */
+        .s-6 { color: #f97316; } /* Orange */
+        .s-7 { color: #f59e0b; } /* Yellow */
+
+        /* --- UPDATED: Floating Characters Styles (The Space Dream Effect) --- */
+        #floating-chars-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -20; 
+            pointer-events: none;
+            /* Deep Space Background Gradient */
+            background: radial-gradient(circle at 50% 100%, #1e3a8a 0%, #0f172a 70%); 
+        }
+
+        .floating-char {
+            position: absolute;
+            /* Small Font Size for Space Effect */
+            font-size: 5rem; 
+            /* Gray Color */
+            color: #9ca3af; /* Tailwind Gray-400 */ 
+            opacity: 0.15; 
+            /* Deeper blur and glow for distant, misty look */
+            filter: blur(2.5px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); 
+            will-change: transform, opacity;
+            line-height: 1;
+            font-weight: 800;
+            user-select: none;
+            cursor: default;
+        }
+
+        /* Apply the custom keyframes for floating */
+        .floating-char-anim-1 {
+            animation-name: float-1;
+            animation-iteration-count: infinite;
+            animation-direction: alternate; 
+        }
+        .floating-char-anim-2 {
+            animation-name: float-2;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        /* --- END UPDATED STYLES --- */
+
+
+        /* Clash of Clans Footer Style (Modified for dark theme) */
+        .coc-footer {
+            background-color: #0f172a;
+            background-image: linear-gradient(145deg, #1f2937 0%, #08111e 100%); 
+            border-top: 8px solid var(--coc-gold);
+            box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Sharper, Brighter COC Icons */
+        .coc-icon {
+            transition: all 0.3s ease-in-out; 
+            color: var(--bright-gold); 
+            text-shadow: 0 0 4px rgba(255, 215, 0, 0.8); 
+            filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.6)); 
+        }
+
+        /* Hamburger Styles (White on Dark Theme) */
+        .hamburger-icon { display: flex; flex-direction: column; justify-content: space-around; width: 28px; height: 20px; cursor: pointer; z-index: 60; }
+        .bar { display: block; width: 100%; height: 3px; background: #f3f4f6; border-radius: 9999px; transition: all 0.3s ease-in-out; } /* Light gray bars */
+        .hamburger-icon.is-open .bar-top { transform: translateY(8.5px) rotate(45deg); }
+        .hamburger-icon.is-open .bar-middle { opacity: 0; transform: translateX(-20px); }
+        .hamburger-icon.is-open .bar-bottom { transform: translateY(-8.5px) rotate(-45deg); }
+        
+        /* Mobile Menu Styles (Dark Glass) */
+        body.scrim-overlay.is-open::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 30; opacity: 1; transition: opacity 0.5s ease; pointer-events: auto; }
+        #mobile-menu { 
+            background-color: rgba(17, 24, 39, 0.95); /* Gray-900 transparent */
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            overflow: auto; 
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5); 
+        }
+        .mobile-nav-link { transition: background-color 0.2s; color: #f3f4f6; } /* Light text */
+        .mobile-nav-link:hover { background-color: rgba(245, 158, 11, 0.2); } /* Gold hover */
+        
+    </style>
+</head>
+<!-- UPDATED: Body to use dark background and light text -->
+<body class="bg-gray-900 text-gray-100 font-[Inter] min-h-screen flex flex-col" style="perspective: 1000px;">
+    
+    <!-- Overall Scroll Wrapper -->
+    <div id="scroll-wrapper" class="relative">
+
+        <!-- Background Container: The Dream Canvas -->
+        <div id="floating-chars-container">
+            <!-- Characters will be generated here by JavaScript -->
+        </div>
+        
+        <!-- Header/Navbar -->
+        <header class="sticky top-0 z-50 py-4 px-6 md:px-12 glass-card shadow-glass w-full border-b border-accent-yellow/30 transition-all duration-300">
+            <div class="container mx-auto flex justify-between items-center">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 transform hover:scale-[1.01] transition duration-300">
+                    <!-- Updated colors for dark theme -->
+                    <img src="https://placehold.co/60x60/f59e0b/1f2937?text=ES" alt="EduSankalp Logo" class="w-12 h-12 rounded-full shadow-md">
+                    <div class="text-left leading-none">
+                        <!-- Text color updated to light gray/gold -->
+                        <h1 class="text-3xl font-black text-gray-100 tracking-tight">Edu<span class="text-accent-yellow">Sankalp</span></h1>
+                        <div class="flex items-center mt-1 space-x-1">
+                            <p class="text-xs font-light text-gray-400">powered by</p>
+                            <p class="text-sm font-bold text-gray-100">CompileX</p>
+                            <img src="https://placehold.co/12x12/f59e0b/1f2937?text=C" alt="CompileX Logo" class="w-3 h-3 rounded-full">
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-10 text-lg font-medium">
+                    <!-- Text colors updated for dark theme -->
+                    <a href="classes.html" class="text-gray-300 hover:text-accent-yellow transition duration-300 transform hover:-translate-y-0.5">Classes</a>
+                    <a href="features.html" class="text-gray-300 hover:text-accent-yellow transition duration-300 transform hover:-translate-y-0.5">Features</a>
+                    <a href="funding.html" class="text-gray-300 hover:text-accent-yellow transition duration-300 transform hover:-translate-y-0.5">Funding</a>
+                    <a href="aboutus.html" class="text-gray-300 hover:text-accent-yellow transition duration-300 transform hover:-translate-y-0.5">About Us</a>
+                    <a href="contact.html" class="text-gray-300 hover:text-accent-yellow transition duration-300 transform hover:-translate-y-0.5">Contact</a>
+                </nav>
+
+                <!-- CTA & Mobile Menu Toggle -->
+                <div class="flex items-center space-x-4">
+                    
+                    <!-- Desktop CTA Button -->
+                    <button class="hidden md:block bg-accent-yellow text-gray-900 py-2 px-8 rounded-full font-bold shadow-lg shadow-yellow-500/50 border-2 border-accent-yellow hover:shadow-xl hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                        Start Learning
+                    </button>
+
+                    <!-- Mobile Hamburger Toggle (Bars are light gray/white in custom CSS) -->
+                    <button id="menu-toggle" class="flex md:hidden text-gray-100 z-50 p-2 rounded-full bg-white/5 hover:bg-white/10 transition duration-200">
+                        <div class="hamburger-icon" id="animated-hamburger">
+                            <span class="bar bar-top"></span>
+                            <span class="bar bar-middle"></span>
+                            <span class="bar bar-bottom"></span>
+                        </div>
+                    </button>
+                </div>
+
+
+            </div>
+        </header>
+        
+        <!-- Mobile Menu Flyout -->
+        <div id="mobile-menu" class="fixed top-0 right-0 h-full w-full max-w-xs z-40 transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col justify-start space-y-6 pt-24 px-8 pb-8">
+            
+            <a href="#" class="text-3xl font-extrabold mobile-nav-link p-3 w-full text-center hover:text-accent-yellow transition duration-200">Classes</a>
+            <a href="#" class="text-3xl font-extrabold mobile-nav-link p-3 w-full text-center hover:text-accent-yellow transition duration-200">Features</a>
+            <a href="#" class="text-3xl font-extrabold mobile-nav-link p-3 w-full text-center hover:text-accent-yellow transition duration-200">Funding</a>
+            <a href="#" class="text-3xl font-extrabold mobile-nav-link p-3 w-full text-center hover:text-accent-yellow transition duration-200">About Us</a>
+            <a href="#" class="text-3xl font-extrabold mobile-nav-link p-3 w-full text-center hover:text-accent-yellow transition duration-200">Contact</a>
+
+            <!-- Mobile CTA Button -->
+            <button class="bg-accent-yellow text-primary-dark py-3 px-10 rounded-full font-bold text-xl shadow-lg hover:shadow-xl hover:bg-yellow-600 transition duration-300 transform scale-105 mt-8">
+                Start Learning
+            </button>
+            
+        </div>
+
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-6 py-12 md:py-20 space-y-20">
+
+            <!-- Hero Section -->
+            <section id="hero-section" class="text-center relative animate-fade-in-up">
+                <!-- Subtle Background Glow -->
+                <div class="absolute inset-0 flex justify-center items-center -z-10">
+                     <!-- Blue glow on dark theme -->
+                     <div class="w-72 h-72 bg-blue-500/20 rounded-full blur-[80px] animate-pulse-slow"></div>
+                </div>
+
+                <div id="hero-content" class="transform-gpu">
+                    <!-- Hero Title with Parallax -->
+                    <!-- Text color adjusted to light gray/white -->
+                    <h2 id="hero-title" data-parallax="0.06" class="text-5xl md:text-8xl font-black mb-6 leading-tight text-gray-100 hero-title-glow transform-gpu transition duration-700">
+                        The 
+                        <span class="multi-color-sankalp">
+                            <span class="s-1">S</span>
+                            <span class="s-2">a</span>
+                            <span class="s-3">n</span>
+                            <span class="s-4">k</span>
+                            <span class="s-5">a</span>
+                            <span class="s-6">l</span>
+                            <span class="s-7">p</span>
+                        </span>
+                        <br/> for Quality Education
+                    </h2>
+                    <!-- Text color adjusted to light gray -->
+                    <p id="hero-subtitle" data-parallax="0.03" class="text-xl md:text-3xl text-gray-400 max-w-5xl mx-auto mb-12 transform-gpu transition duration-700">
+                        Unlocking potential for every child in India, from the underserved to the privileged. Free, quality, and accessible learning, built for tomorrow's leaders.
+                    </p>
+                </div>
+                
+                <!-- Hero CTA Button with Parallax -->
+                <button id="hero-cta" data-parallax="0.01" class="bg-accent-yellow text-primary-dark py-4 px-12 rounded-full font-extrabold text-xl shadow-2xl shadow-yellow-500/60 hover:bg-yellow-600 transition duration-500 transform hover:scale-105 hover:shadow-yellow-700/80">
+                    Explore Our Free Courses
+                </button>
+            </section>
+
+            <!-- Pillars Section -->
+            <section class="animate-fade-in-up" style="animation-delay: 0.4s;">
+                <!-- Text color adjusted to light gray/white -->
+                <h3 class="text-center text-3xl md:text-5xl font-extrabold mb-16 text-gray-100 hero-title-glow">Our Pillars of Excellence</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- Pillar 1 -->
+                    <!-- Card uses dark glass-card style -->
+                    <div class="glass-card tile-interactive tile-shine-on-hover p-8 text-center shadow-glass border-opacity-70">
+                        <div class="w-20 h-20 mx-auto mb-5 flex items-center justify-center bg-accent-yellow/30 rounded-3xl rotate-6 shadow-lg">
+                            <i data-lucide="globe" class="w-10 h-10 text-accent-yellow -rotate-6"></i>
+                        </div>
+                        <!-- Text color adjusted -->
+                        <h4 class="text-2xl font-bold mb-3 text-gray-100">Pan-India Accessibility</h4>
+                        <p class="text-sm text-gray-400">Reaching every corner, ensuring quality education is never limited by location or socio-economic status.</p>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="glass-card tile-interactive tile-shine-on-hover p-8 text-center shadow-glass border-opacity-70" style="animation-delay: 0.1s;">
+                        <div class="w-20 h-20 mx-auto mb-5 flex items-center justify-center bg-cyan-500/30 rounded-3xl -rotate-3 shadow-lg">
+                            <i data-lucide="book-open-text" class="w-10 h-10 text-cyan-400 rotate-3"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3 text-gray-100">Advanced Curriculum</h4>
+                        <p class="text-sm text-gray-400">Future-ready content aligned with the latest educational standards and emerging technologies.</p>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="glass-card tile-interactive tile-shine-on-hover p-8 text-center shadow-glass border-opacity-70" style="animation-delay: 0.2s;">
+                        <div class="w-20 h-20 mx-auto mb-5 flex items-center justify-center bg-green-500/30 rounded-3xl rotate-3 shadow-lg">
+                            <i data-lucide="users" class="w-10 h-10 text-green-400 -rotate-3"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3 text-gray-100">Dedicated Mentors</h4>
+                        <p class="text-sm text-gray-400">Connect with top educators for personalized guidance and doubt-solving sessions.</p>
+                    </div>
+
+                    <!-- Pillar 4 -->
+                    <div class="glass-card tile-interactive tile-shine-on-hover p-8 text-center shadow-glass border-opacity-70" style="animation-delay: 0.3s;">
+                        <div class="w-20 h-20 mx-auto mb-5 flex items-center justify-center bg-purple-500/30 rounded-3xl -rotate-6 shadow-lg">
+                            <i data-lucide="cpu" class="w-10 h-10 text-purple-400 rotate-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3 text-gray-100">Powered by CompileX</h4>
+                        <p class="text-sm text-gray-400">Leveraging AI and modern tools to create adaptive and effective learning paths.</p>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer (Clash of Clans Style - Already dark, only minor text tweaks needed) -->
+        <footer class="coc-footer mt-24 py-16 px-6 text-gray-200">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left border-b border-gray-600 pb-10 mb-8">
+                    
+                    <!-- Logo/Mission -->
+                    <div class="mb-8 md:mb-0">
+                        <h5 class="text-5xl font-black text-coc-gold drop-shadow-xl">EduSankalp</h5>
+                        <p class="text-gray-400 mt-3 text-base">Forging the future, one student at a time.</p>
+                    </div>
+
+                    <!-- Footer Links -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-12 text-center md:text-left">
+                        <div>
+                            <h6 class="text-xl font-extrabold text-white mb-4 border-b-2 border-coc-gold inline-block">Learn</h6>
+                            <ul class="space-y-3 text-gray-400 text-sm">
+                                <li><a href="#" class="hover:text-coc-gold transition">K-12 Classes</a></li>
+                                <li><a href="#" class="hover:text-coc-gold transition">Vocational Training</a></li>
+                                <li><a href="#" class="hover:text-coc-gold transition">NEET/JEE Prep</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6 class="text-xl font-extrabold text-white mb-4 border-b-2 border-coc-gold inline-block">Support</h6>
+                            <ul class="space-y-3 text-gray-400 text-sm">
+                                <li><a href="#" class="hover:text-coc-gold transition">Help Center</a></li>
+                                <li><a href="#" class="hover:text-coc-gold transition">FAQ</a></li>
+                                <li><a href="#" class="hover:text-coc-gold transition">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- Social Media and Copyright -->
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    
+                    <!-- Social Icons (Sharper, Brighter) -->
+                    <div class="flex space-x-7 text-4xl mb-6 sm:mb-0">
+                        <a href="#" class="coc-icon" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="coc-icon" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="coc-icon" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="coc-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="coc-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="coc-icon" aria-label="Mail"><i class="fas fa-envelope"></i></a>
+                    </div>
+
+                    <!-- Copyright -->
+                    <p class="text-gray-500 text-base">
+                        &copy; 2025 EduSankalp. A non-profit initiative. Powered by CompileX.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+    </div> 
+
+    <!-- Main JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons 
+        lucide.createIcons();
+
+        // --- BACKGROUND GENERATOR LOGIC (The Space Dream Canvas) ---
+        const charsContainer = document.getElementById('floating-chars-container');
+        // A representative mix of characters from English, Hindi, Bengali, Tamil, Telugu, and Urdu
+        const characters = [
+            'A', 'க', 'ا', 'B', 'अ', '৫', 'C', 'ب', 'ட', 'D',
+            'ख', 'E', 'চ', 'त', 'F', 'ग', 'ث', 'G', 'ঘ', 'T',
+            'H', 'इ', 'ی', 'I', 'ఌ', 'L', 'ম', 'J', 'న', 'O',
+            'P', 'র', 'ழ', 'Q', 'স', 'S', 'ل', 'U', 'শ', 'ب',
+            'W', 'ड', 'ط', 'X', 'ఋ', 'Z', 'ڑ', 'ঞ', 'V', 'ह'
+        ];
+
+        const numChars = 50; 
+        const animations = ['floating-char-anim-1', 'floating-char-anim-2']; 
+
+        for (let i = 0; i < numChars; i++) {
+            const char = characters[Math.floor(Math.random() * characters.length)];
+            const animationName = animations[Math.floor(Math.random() * animations.length)];
+            const animationDuration = (18 + Math.random() * 25) + 's'; // 18s to 43s (slower overall)
+            const animationDelay = (Math.random() * -40) + 's'; 
+            
+            // UPDATED: Smaller font size range for the "small text" request
+            const fontSize = (2 + Math.random() * 4) + 'rem'; // 2rem to 6rem
+
+            const div = document.createElement('div');
+            div.classList.add('floating-char', animationName);
+            div.textContent = char;
+            
+            // Random position across the viewport
+            div.style.left = (Math.random() * 100) + 'vw';
+            div.style.top = (Math.random() * 100) + 'vh';
+            
+            // Apply dynamic animation speed and delay
+            div.style.animationDuration = animationDuration;
+            div.style.animationDelay = animationDelay;
+            div.style.fontSize = fontSize;
+            
+            // Opacity range for depth and mist (0.15 to 0.40)
+            div.style.opacity = (0.15 + Math.random() * 0.25).toFixed(2); 
+
+            // Deeper blur for some elements to create depth (far away)
+            if (Math.random() > 0.5) {
+                // Blur range 2px to 5px
+                div.style.filter = `blur(${2 + Math.random() * 3}px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1))`;
+            }
+            
+            charsContainer.appendChild(div);
+        }
+        // --- END BACKGROUND GENERATOR LOGIC ---
+
+
+        // --- MOBILE MENU LOGIC ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const animatedHamburger = document.getElementById('animated-hamburger');
+        const body = document.body;
+        
+        const mobileLinks = document.querySelectorAll('#mobile-menu a, #mobile-menu button');
+        
+        body.classList.add('scrim-overlay'); 
+
+        function toggleMenu() {
+            const isClosed = mobileMenu.classList.contains('translate-x-full');
+            
+            if (isClosed) {
+                mobileMenu.classList.remove('translate-x-full');
+                animatedHamburger.classList.add('is-open');
+                body.classList.add('is-open');
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+                animatedHamburger.classList.remove('is-open');
+                body.classList.remove('is-open');
+            }
+        }
+        menuToggle.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(element => {
+            element.addEventListener('click', (e) => {
+                setTimeout(toggleMenu, 300); 
+            });
+        });
+
+
+        // --- HEADER SCROLL EFFECT ---
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('py-3');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.add('py-4');
+                header.classList.remove('py-3');
+            }
+        });
+
+        // --- PARALLAX SCROLL EFFECT ---
+        const heroSection = document.getElementById('hero-section');
+        const heroContent = document.getElementById('hero-content');
+
+        function applyParallax() {
+            const scrollPos = window.scrollY;
+            const heroRect = heroSection.getBoundingClientRect();
+
+            if (heroRect.top < window.innerHeight && heroRect.bottom > 0) {
+                const elements = heroContent.querySelectorAll('[data-parallax]');
+
+                elements.forEach(el => {
+                    const depth = parseFloat(el.getAttribute('data-parallax'));
+                    const movement = scrollPos * depth * -1; 
+
+                    el.style.transform = `translateY(${movement}px) rotateX(${movement / 1000}deg)`;
+                });
+            }
+        }
+
+        window.addEventListener('scroll', applyParallax);
+        
+    </script>
+</body>
+</html>

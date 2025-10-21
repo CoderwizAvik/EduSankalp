@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSankalp - Learning Resources Hub</title>
+    
+    <!-- 1. Load External Scripts/Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght(100..900)&display=swap" rel="stylesheet">
+    
+    <!-- 2. Configure Tailwind (JAVASCRIPT) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#1f2937', 
+                        'accent-gold': '#f59e0b', 
+                        'deep-indigo': '#171a2b', 
+                        'resource-green': '#10b981', 
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 24px 0 rgba(0, 0, 0, 0.4)',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'float-1': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(0deg) scale(1)' },
+                            '50%': { transform: 'translate3d(30vw, -15vh, -150px) rotate(8deg) scale(0.85)' },
+                            '100%': { transform: 'translate3d(-20vw, 25vh, 100px) rotate(-15deg) scale(1.15)' },
+                        },
+                        'float-2': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(10deg) scale(1)' },
+                            '40%': { transform: 'translate3d(-25vw, 20vh, 120px) rotate(-10deg) scale(1.2)' },
+                            '80%': { transform: 'translate3d(35vw, -10vh, -80px) rotate(20deg) scale(0.8)' },
+                            '100%': { transform: 'translate3d(0, 0, 0) rotate(10deg) scale(1)' },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 3. Custom CSS Styles -->
+    <style>
+        :root {
+            --accent-gold: #f59e0b;
+        }
+
+        /* Essential Custom DARK Glassmorphism Styles for Cards/Header */
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.75); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.3); 
+            border-radius: 16px;
+            transform-style: preserve-3d;
+        }
+        
+        .hero-title-clean {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.2), 
+                0 0 30px rgba(245, 158, 11, 0.5); 
+        }
+
+        /* Hover Effect for Resources */
+        .resource-item-interactive {
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+        .resource-item-interactive:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border-color: #10b981; /* Green accent */
+        }
+
+        /* Background Floating Characters (Same as index.html) */
+        #floating-chars-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -20; 
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 100%, #1e3a8a 0%, #0f172a 80%); 
+        }
+
+        .floating-char {
+            position: absolute;
+            font-size: 5rem; 
+            color: #9ca3af; 
+            opacity: 0.1; 
+            filter: blur(4px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); 
+            will-change: transform, opacity;
+            line-height: 1;
+            font-weight: 800;
+            user-select: none;
+            cursor: default;
+        }
+
+        .floating-char-anim-1 { animation-name: float-1; animation-iteration-count: infinite; animation-direction: alternate; }
+        .floating-char-anim-2 { animation-name: float-2; animation-iteration-count: infinite; animation-direction: alternate; }
+        
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-[Inter] min-h-screen flex flex-col" style="perspective: 1000px;">
+    
+    <!-- Overall Scroll Wrapper -->
+    <div id="scroll-wrapper" class="relative min-h-screen">
+
+        <!-- Background Container: The Dream Canvas -->
+        <div id="floating-chars-container">
+            <!-- Characters will be generated here by JavaScript -->
+        </div>
+        
+        <!-- Header/Navbar -->
+        <header class="sticky top-0 z-50 py-4 px-6 md:px-12 glass-card shadow-glass w-full border-b border-accent-gold/30 transition-all duration-300">
+            <div class="container mx-auto flex justify-between items-center">
+                
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://placehold.co/60x60/f59e0b/1f2937?text=ES" alt="EduSankalp Logo" class="w-12 h-12 rounded-full shadow-md">
+                    <div class="text-left leading-none">
+                        <h1 class="text-3xl font-black text-gray-100 tracking-tight">Edu<span class="text-accent-gold">Sankalp</span></h1>
+                        <p class="text-sm font-light text-gray-400 mt-1">Knowledge Stream</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 text-lg font-medium">
+                    <!-- Assuming index.html is the courses page -->
+                    <a href="index.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Courses</a>
+                    <a href="mentors.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Mentors</a>
+                    <a href="resources.html" class="text-accent-gold border-b-2 border-accent-gold transition duration-300 pb-1">Resources</a>
+                </nav>
+
+                <!-- CTA -->
+                <button class="hidden md:block bg-accent-gold text-primary-dark py-2 px-6 rounded-full font-bold shadow-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                    Login
+                </button>
+                
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-6 py-12 md:py-16 space-y-16">
+
+            <!-- Title Section -->
+            <section class="text-center animate-fade-in-up">
+                <h2 class="text-5xl md:text-6xl font-black mb-4 text-gray-100 hero-title-clean">
+                    The Learning Arsenal
+                </h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    Access our curated library of study materials, practice papers, and essential external links to boost your preparation.
+                </p>
+            </section>
+            
+            <!-- Resource Sections Container -->
+            <div class="space-y-12">
+                
+                <!-- 1. Downloadable Study Materials -->
+                <section class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <h3 class="text-3xl font-bold text-resource-green mb-6 border-b border-resource-green/50 pb-2">
+                        <i data-lucide="book-open-text" class="inline-block w-8 h-8 mr-3"></i> Quick Downloads (PDFs)
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- Resource 1: Chemistry Notes -->
+                        <a href="#" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-resource-green/30 hover:border-resource-green/80">
+                            <div class="p-3 bg-resource-green/20 rounded-lg">
+                                <i data-lucide="file-text" class="w-6 h-6 text-resource-green"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Organic Chemistry Reaction Mechanism Summary</p>
+                                <p class="text-sm text-gray-400">Class 12 | 15 MB | By Prof. Verma</p>
+                            </div>
+                            <i data-lucide="download" class="w-5 h-5 text-accent-gold"></i>
+                        </a>
+
+                        <!-- Resource 2: Math Practice Paper -->
+                        <a href="#" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-resource-green/30 hover:border-resource-green/80">
+                            <div class="p-3 bg-resource-green/20 rounded-lg">
+                                <i data-lucide="clipboard-check" class="w-6 h-6 text-resource-green"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Calculus Advanced Practice Set (JEE Level)</p>
+                                <p class="text-sm text-gray-400">JEE Mains | 5 MB | 50 Questions</p>
+                            </div>
+                            <i data-lucide="download" class="w-5 h-5 text-accent-gold"></i>
+                        </a>
+
+                        <!-- Resource 3: Physics Formulas -->
+                        <a href="#" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-resource-green/30 hover:border-resource-green/80">
+                            <div class="p-3 bg-resource-green/20 rounded-lg">
+                                <i data-lucide="flask-conical" class="w-6 h-6 text-resource-green"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Electromagnetism Key Formula Sheet</p>
+                                <p class="text-sm text-gray-400">Class 11 & 12 | 2 MB | Must-Read</p>
+                            </div>
+                            <i data-lucide="download" class="w-5 h-5 text-accent-gold"></i>
+                        </a>
+
+                    </div>
+                </section>
+
+                <!-- 2. Recommended Video Library -->
+                <section class="animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <h3 class="text-3xl font-bold text-accent-gold mb-6 border-b border-accent-gold/50 pb-2">
+                        <i data-lucide="youtube" class="inline-block w-8 h-8 mr-3 fill-accent-gold"></i> Recommended Video Lessons
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Video 1: React Basics -->
+                        <a href="#" target="_blank" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-accent-gold/30 hover:border-accent-gold/80">
+                            <div class="p-3 bg-accent-gold/20 rounded-lg">
+                                <i data-lucide="play-circle" class="w-6 h-6 text-accent-gold"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Introduction to React Hooks (State Management)</p>
+                                <p class="text-sm text-gray-400">Technology | 25 mins | By Ravi Teja</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-5 h-5 text-resource-green"></i>
+                        </a>
+
+                        <!-- Video 2: History Lecture -->
+                        <a href="#" target="_blank" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-accent-gold/30 hover:border-accent-gold/80">
+                            <div class="p-3 bg-accent-gold/20 rounded-lg">
+                                <i data-lucide="play-circle" class="w-6 h-6 text-accent-gold"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Understanding the 1857 Revolt in India</p>
+                                <p class="text-sm text-gray-400">History | 45 mins | By Kavita Menon</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-5 h-5 text-resource-green"></i>
+                        </a>
+
+                    </div>
+                </section>
+
+
+                <!-- 3. External Learning Tools -->
+                <section class="animate-fade-in-up" style="animation-delay: 0.6s;">
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-6 border-b border-cyan-400/50 pb-2">
+                        <i data-lucide="link" class="inline-block w-8 h-8 mr-3"></i> External Tools & Simulators
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        
+                        <!-- Tool 1: Math Sim -->
+                        <a href="#" target="_blank" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-cyan-400/30 hover:border-cyan-400/80">
+                            <div class="p-3 bg-cyan-400/20 rounded-lg">
+                                <i data-lucide="calculator" class="w-6 h-6 text-cyan-400"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Differential Equation Solver</p>
+                                <p class="text-sm text-gray-400">Practice complex math problems online.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-5 h-5 text-accent-gold"></i>
+                        </a>
+
+                        <!-- Tool 2: Science Lab Sim -->
+                        <a href="#" target="_blank" class="glass-card resource-item-interactive p-5 flex items-center space-x-4 shadow-xl border-cyan-400/30 hover:border-cyan-400/80">
+                            <div class="p-3 bg-cyan-400/20 rounded-lg">
+                                <i data-lucide="syringe" class="w-6 h-6 text-cyan-400"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-lg font-semibold text-gray-100">Virtual Chemistry Lab</p>
+                                <p class="text-sm text-gray-400">Conduct safe, interactive experiments.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-5 h-5 text-accent-gold"></i>
+                        </a>
+
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer (Simple) -->
+        <footer class="mt-16 py-8 px-6 text-center text-gray-500 bg-black/30">
+            &copy; 2025 EduSankalp. The backbone of knowledge.
+        </footer>
+
+    </div> 
+
+    <!-- Main JavaScript Logic (Background) -->
+    <script>
+        // Initialize Lucide Icons 
+        lucide.createIcons();
+
+        // --- BACKGROUND GENERATOR LOGIC (The Clean Cosmic Canvas) ---
+        const charsContainer = document.getElementById('floating-chars-container');
+        
+        // Comprehensive list of English alphabet and various Indian/South Asian scripts
+        const characters = [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            'க', 'அ', 'ட', 'த', 'ந', 'ர', 'ழ', 'ய', 'ல', 'ற', 'ன', 
+            'ا', 'ب', 'خ', 'ث', 'ص', 'ط', 'ع', 'ف', 'م', 'ل', 'ي', 'ش', 
+            'अ', 'ख', 'ग', 'घ', 'इ', 'ऋ', 'औ', 'ण', 'स', 'ह', 'ज', 'ट', 
+            '५', 'চ', 'ণ', 'ষ', 'ঞ', 'ঢ়', 'হ', 'ল', 'ক', 'ম', 'ব', 'য' 
+        ];
+
+        const numChars = 150; 
+        const animations = ['floating-char-anim-1', 'floating-char-anim-2']; 
+
+        for (let i = 0; i < numChars; i++) {
+            const char = characters[Math.floor(Math.random() * characters.length)];
+            const animationName = animations[Math.floor(Math.random() * animations.length)];
+            const animationDuration = (18 + Math.random() * 25) + 's'; 
+            const animationDelay = (Math.random() * -40) + 's'; 
+            
+            const fontSize = (2 + Math.random() * 2) + 'rem'; 
+
+            const div = document.createElement('div');
+            div.classList.add('floating-char', animationName);
+            div.textContent = char;
+            
+            div.style.left = (Math.random() * 100) + 'vw';
+            div.style.top = (Math.random() * 100) + 'vh';
+            
+            div.style.animationDuration = animationDuration;
+            div.style.animationDelay = animationDelay;
+            div.style.fontSize = fontSize;
+            
+            div.style.opacity = (0.10 + Math.random() * 0.25).toFixed(2); 
+
+            if (Math.random() > 0.5) {
+                div.style.filter = `blur(${3 + Math.random() * 3}px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1))`;
+            }
+            
+            charsContainer.appendChild(div);
+        }
+        // --- END BACKGROUND GENERATOR LOGIC ---
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSankalp - Explore Classes</title>
+    
+    <!-- 1. Load External Scripts/Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght(100..900)&display=swap" rel="stylesheet">
+    
+    <!-- 2. Configure Tailwind (JAVASCRIPT) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#1f2937', 
+                        'accent-gold': '#f59e0b', /* Soft Gold/Amber Accent */
+                        'deep-indigo': '#171a2b', /* Very dark, slight indigo tint for space */
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 24px 0 rgba(0, 0, 0, 0.4)',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        /* REFINED: More aggressive 3D movement for "moving alphabets" */
+                        'float-1': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(0deg) scale(1)' },
+                            '50%': { transform: 'translate3d(30vw, -15vh, -150px) rotate(8deg) scale(0.85)' },
+                            '100%': { transform: 'translate3d(-20vw, 25vh, 100px) rotate(-15deg) scale(1.15)' },
+                        },
+                        'float-2': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(10deg) scale(1)' },
+                            '40%': { transform: 'translate3d(-25vw, 20vh, 120px) rotate(-10deg) scale(1.2)' },
+                            '80%': { transform: 'translate3d(35vw, -10vh, -80px) rotate(20deg) scale(0.8)' },
+                            '100%': { transform: 'translate3d(0, 0, 0) rotate(10deg) scale(1)' },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 3. Custom CSS Styles -->
+    <style>
+        :root {
+            --accent-gold: #f59e0b;
+        }
+
+        /* Essential Custom DARK Glassmorphism Styles for Cards/Header */
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.75); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.3); 
+            border-radius: 16px;
+            transform-style: preserve-3d;
+        }
+        
+        .hero-title-clean {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.2), 
+                0 0 30px rgba(245, 158, 11, 0.5); 
+        }
+
+        /* Card Hover Effect */
+        .class-card-interactive:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5); 
+            border-color: var(--accent-gold);
+            background-color: rgba(30, 41, 59, 0.85);
+        }
+
+        /* --- Floating Characters Styles (Clean Cosmic Effect) --- */
+        #floating-chars-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -20; 
+            pointer-events: none;
+            /* Deep, clean background */
+            background: radial-gradient(circle at 50% 100%, #1e3a8a 0%, #0f172a 80%); 
+        }
+
+        .floating-char {
+            position: absolute;
+            font-size: 5rem; 
+            color: #9ca3af; 
+            opacity: 0.1; 
+            filter: blur(4px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); 
+            will-change: transform, opacity;
+            line-height: 1;
+            font-weight: 800;
+            user-select: none;
+            cursor: default;
+        }
+
+        .floating-char-anim-1 {
+            animation-name: float-1;
+            animation-iteration-count: infinite;
+            animation-direction: alternate; 
+        }
+        .floating-char-anim-2 {
+            animation-name: float-2;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        /* --- END REFINED STYLES --- */
+        
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-[Inter] min-h-screen flex flex-col" style="perspective: 1000px;">
+    
+    <!-- Overall Scroll Wrapper -->
+    <div id="scroll-wrapper" class="relative min-h-screen">
+
+        <!-- Background Container: The Dream Canvas (Covers Entire Page) -->
+        <div id="floating-chars-container">
+            <!-- Characters will be generated here by JavaScript -->
+        </div>
+        
+        <!-- Header/Navbar -->
+        <header class="sticky top-0 z-50 py-4 px-6 md:px-12 glass-card shadow-glass w-full border-b border-accent-gold/30 transition-all duration-300">
+            <div class="container mx-auto flex justify-between items-center">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3">
+                    <img src="https://placehold.co/60x60/f59e0b/1f2937?text=ES" alt="EduSankalp Logo" class="w-12 h-12 rounded-full shadow-md">
+                    <div class="text-left leading-none">
+                        <h1 class="text-3xl font-black text-gray-100 tracking-tight">Edu<span class="text-accent-gold">Sankalp</span></h1>
+                        <p class="text-sm font-light text-gray-400 mt-1">Knowledge Stream</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 text-lg font-medium">
+                    <a href="cources.html" class="text-accent-gold border-b-2 border-accent-gold pb-1 transition duration-300">Courses</a>
+                    <a href="mentor.html" class="text-gray-300 hover:text-accent-gold transition duration-300">Mentors</a>
+                    <a href="resources.html" class="text-gray-300 hover:text-accent-gold transition duration-300">Resources</a>
+                </nav>
+
+                <!-- CTA -->
+                <button class="hidden md:block bg-accent-gold text-primary-dark py-2 px-6 rounded-full font-bold shadow-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                    Login
+                </button>
+                
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-6 py-12 md:py-16 space-y-16">
+
+            <!-- Title Section -->
+            <section class="text-center animate-fade-in-up">
+                <h2 class="text-5xl md:text-6xl font-black mb-4 text-gray-100 hero-title-clean">
+                    Explore Our Knowledge Stream
+                </h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    Choose your educational journey. We offer structured learning paths for every ambition, from competitive exams to modern vocational skills.
+                </p>
+            </section>
+            
+            <!-- Filters & Search Bar (Glassmorphism) -->
+            <section class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="glass-card p-4 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 shadow-xl">
+                    
+                    <!-- Search Input -->
+                    <div class="relative w-full md:flex-grow">
+                        <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" placeholder="Search for 'JEE', 'Class 10 Math', or 'Web Development'" 
+                               class="w-full bg-primary-dark/50 text-gray-200 border border-accent-gold/20 rounded-full py-3 pl-12 pr-6 focus:outline-none focus:ring-2 focus:ring-accent-gold transition duration-300">
+                    </div>
+
+                    <!-- Category Filter Dropdown -->
+                    <select class="w-full md:w-auto bg-primary-dark/50 text-gray-200 border border-accent-gold/20 rounded-full py-3 px-6 focus:outline-none focus:ring-2 focus:ring-accent-gold appearance-none transition duration-300 cursor-pointer">
+                        <option class="bg-primary-dark/90" value="all">All Categories</option>
+                        <option class="bg-primary-dark/90" value="junior">Foundational Learning (N-5)</option>
+                        <option class="bg-primary-dark/90" value="k12">K-12 Schooling</option>
+                        <option class="bg-primary-dark/90" value="competitive">Competitive Exams</option>
+                        <option class="bg-primary-dark/90" value="vocational">Future Skills</option>
+                        <option class="bg-primary-dark/90" value="humanities">Humanities</option>
+                    </select>
+
+                </div>
+            </section>
+
+            <!-- Classes Grid -->
+            <section class="animate-fade-in-up grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" style="animation-delay: 0.4s;">
+
+                <!-- NEW Class Card 0: Foundational Learning (Nursery to Class 5) -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="smile" class="w-10 h-10 text-amber-400 bg-amber-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Foundational Learning</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Play-based and engaging courses covering early literacy, numeracy, and cognitive development for students in Nursery to Class 5.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-medium">Nursery/KG</span>
+                        <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-medium">Phonics</span>
+                        <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-medium">Counting</span>
+                        <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-medium">Storytelling</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        Discover Junior Classes
+                    </button>
+                </div>
+
+                <!-- Class Card 1: Advanced Schooling (K-12) -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="graduation-cap" class="w-10 h-10 text-cyan-400 bg-cyan-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Advanced Schooling</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Comprehensive curriculum for Class 8 to 12. Focusing on conceptual clarity in Math, Science, and Social Studies.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full font-medium">Class 10</span>
+                        <span class="bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full font-medium">Physics</span>
+                        <span class="bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full font-medium">Chemistry</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        View 45 Courses
+                    </button>
+                </div>
+
+                <!-- Class Card 2: Competitive Exams (JEE/NEET) -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="rocket" class="w-10 h-10 text-red-400 bg-red-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Competitive Exams</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Targeted crash courses and deep-dive prep for India's toughest entrance exams, including JEE and NEET.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full font-medium">JEE Advanced</span>
+                        <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full font-medium">NEET Biology</span>
+                        <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full font-medium">Mains Practice</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        Start Your Prep
+                    </button>
+                </div>
+
+                <!-- Class Card 3: Future Skills & Tech -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="cpu" class="w-10 h-10 text-purple-400 bg-purple-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Future Skills & Tech</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Vocational training in high-demand fields like Web Development, AI, Data Science, and Financial Modeling.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-medium">Web Dev</span>
+                        <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-medium">Python</span>
+                        <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-medium">Data Science</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        Explore Vocational Tracks
+                    </button>
+                </div>
+                
+                <!-- Class Card 4: Languages & Communication -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="message-square-text" class="w-10 h-10 text-green-400 bg-green-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Languages & Comms</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Master English, Hindi, and regional languages, focusing on professional communication and writing skills.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded-full font-medium">English IELTS</span>
+                        <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded-full font-medium">Hindi Grammar</span>
+                        <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded-full font-medium">Tamil Script</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        Start Learning
+                    </button>
+                </div>
+
+                <!-- Class Card 5: Financial Literacy -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="wallet" class="w-10 h-10 text-yellow-400 bg-yellow-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Financial Literacy</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Essential life skills: budgeting, saving, investing basics, and introduction to the Indian stock market.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full font-medium">Budgeting</span>
+                        <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full font-medium">Stocks 101</span>
+                        <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full font-medium">Saving Plans</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        Gain Financial Wisdom
+                    </button>
+                </div>
+                
+                <!-- Class Card 6: Arts & Creativity -->
+                <div class="glass-card class-card-interactive p-6 space-y-4 shadow-xl cursor-pointer transition duration-400 border-opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="paintbrush" class="w-10 h-10 text-pink-400 bg-pink-400/20 p-2 rounded-xl"></i>
+                        <h4 class="text-2xl font-bold text-gray-100">Arts & Creativity</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Courses on digital design, classical Indian arts, music theory, and creative writing techniques.</p>
+                    <div class="flex flex-wrap gap-2 text-sm pt-2">
+                        <span class="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full font-medium">Digital Art</span>
+                        <span class="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full font-medium">Music Theory</span>
+                        <span class="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full font-medium">Creative Writing</span>
+                    </div>
+                    <button class="w-full bg-accent-gold/10 text-accent-gold py-2 rounded-lg mt-3 font-semibold hover:bg-accent-gold hover:text-primary-dark transition">
+                        Unleash Creativity
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer (Simple) -->
+        <footer class="mt-16 py-8 px-6 text-center text-gray-500 bg-black/30">
+            &copy; 2025 EduSankalp. Free Education. Privacy Policy | Terms.
+        </footer>
+
+    </div> 
+
+    <!-- Main JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons 
+        lucide.createIcons();
+
+        // --- BACKGROUND GENERATOR LOGIC (The Clean Cosmic Canvas) ---
+        const charsContainer = document.getElementById('floating-chars-container');
+        
+        // Comprehensive list of English alphabet and various Indian/South Asian scripts
+        const characters = [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            'க', 'அ', 'ட', 'த', 'ந', 'ர', 'ழ', 'ய', 'ல', 'ற', 'ன', // Tamil/South Indian Scripts
+            'ا', 'ب', 'خ', 'ث', 'ص', 'ط', 'ع', 'ف', 'م', 'ل', 'ي', 'ش', // Arabic/Urdu Scripts
+            'अ', 'ख', 'ग', 'घ', 'इ', 'ऋ', 'औ', 'ण', 'स', 'ह', 'ज', 'ट', // Devanagari/Hindi Scripts
+            '৫', 'চ', 'ণ', 'ষ', 'ঞ', 'ঢ়', 'হ', 'ল', 'ক', 'ম', 'ব', 'য' // Bengali Scripts
+        ];
+
+        // Increased character count for full coverage
+        const numChars = 150; 
+        const animations = ['floating-char-anim-1', 'floating-char-anim-2']; 
+
+        for (let i = 0; i < numChars; i++) {
+            const char = characters[Math.floor(Math.random() * characters.length)];
+            const animationName = animations[Math.floor(Math.random() * animations.length)];
+            const animationDuration = (18 + Math.random() * 25) + 's'; 
+            const animationDelay = (Math.random() * -40) + 's'; 
+            
+            // Font size range (2rem to 4rem)
+            const fontSize = (2 + Math.random() * 2) + 'rem'; 
+
+            const div = document.createElement('div');
+            div.classList.add('floating-char', animationName);
+            div.textContent = char;
+            
+            // Random position across the entire viewport
+            div.style.left = (Math.random() * 100) + 'vw';
+            div.style.top = (Math.random() * 100) + 'vh';
+            
+            // Apply dynamic animation speed and delay
+            div.style.animationDuration = animationDuration;
+            div.style.animationDelay = animationDelay;
+            div.style.fontSize = fontSize;
+            
+            // Opacity range for depth and mist (0.10 to 0.35)
+            div.style.opacity = (0.10 + Math.random() * 0.25).toFixed(2); 
+
+            // Deeper blur for some elements to create depth (far away)
+            if (Math.random() > 0.5) {
+                // Blur range 3px to 6px
+                div.style.filter = `blur(${3 + Math.random() * 3}px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1))`;
+            }
+            
+            charsContainer.appendChild(div);
+        }
+        // --- END BACKGROUND GENERATOR LOGIC ---
+        
+    </script>
+</body>
+</html>

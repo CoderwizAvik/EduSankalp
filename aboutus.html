@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSankalp - About Us</title>
+    
+    <!-- 1. Load External Scripts/Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght(100..900)&display=swap" rel="stylesheet">
+    
+    <!-- 2. Configure Tailwind (JAVASCRIPT) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#1f2937', 
+                        'accent-gold': '#f59e0b', 
+                        'deep-indigo': '#171a2b', 
+                        'funding-purple': '#8b5cf6', /* Used for Funding/Impact sections */
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 24px 0 rgba(0, 0, 0, 0.4)',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'float-1': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(0deg) scale(1)' },
+                            '50%': { transform: 'translate3d(30vw, -15vh, -150px) rotate(8deg) scale(0.85)' },
+                            '100%': { transform: 'translate3d(-20vw, 25vh, 100px) rotate(-15deg) scale(1.15)' },
+                        },
+                        'float-2': { 
+                            '0%': { transform: 'translate3d(0, 0, 0) rotate(10deg) scale(1)' },
+                            '40%': { transform: 'translate3d(-25vw, 20vh, 120px) rotate(-10deg) scale(1.2)' },
+                            '80%': { transform: 'translate3d(35vw, -10vh, -80px) rotate(20deg) scale(0.8)' },
+                            '100%': { transform: 'translate3d(0, 0, 0) rotate(10deg) scale(1)' },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 3. Custom CSS Styles -->
+    <style>
+        :root {
+            --accent-gold: #f59e0b;
+        }
+
+        /* Essential Custom DARK Glassmorphism Styles for Cards/Header */
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.75); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.3); 
+            border-radius: 16px;
+            transform-style: preserve-3d;
+        }
+        
+        .hero-title-clean {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.2), 
+                0 0 30px rgba(245, 158, 11, 0.5); 
+        }
+
+        /* Background Floating Characters (Same as features.html) */
+        #floating-chars-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -20; 
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 100%, #1e3a8a 0%, #0f172a 80%); 
+        }
+
+        .floating-char {
+            position: absolute;
+            font-size: 5rem; 
+            color: #9ca3af; 
+            opacity: 0.1; 
+            filter: blur(4px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); 
+            will-change: transform, opacity;
+            line-height: 1;
+            font-weight: 800;
+            user-select: none;
+            cursor: default;
+        }
+
+        .floating-char-anim-1 { animation-name: float-1; animation-iteration-count: infinite; animation-direction: alternate; }
+        .floating-char-anim-2 { animation-name: float-2; animation-iteration-count: infinite; animation-direction: alternate; }
+        
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-[Inter] min-h-screen flex flex-col" style="perspective: 1000px;">
+    
+    <!-- Overall Scroll Wrapper -->
+    <div id="scroll-wrapper" class="relative min-h-screen">
+
+        <!-- Background Container: The Dream Canvas -->
+        <div id="floating-chars-container">
+            <!-- Characters will be generated here by JavaScript -->
+        </div>
+        
+        <!-- Header/Navbar -->
+        <header class="sticky top-0 z-50 py-4 px-6 md:px-12 glass-card shadow-glass w-full border-b border-accent-gold/30 transition-all duration-300">
+            <div class="container mx-auto flex justify-between items-center">
+                
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://placehold.co/60x60/f59e0b/1f2937?text=ES" alt="EduSankalp Logo" class="w-12 h-12 rounded-full shadow-md">
+                    <div class="text-left leading-none">
+                        <h1 class="text-3xl font-black text-gray-100 tracking-tight">Edu<span class="text-accent-gold">Sankalp</span></h1>
+                        <p class="text-sm font-light text-gray-400 mt-1">Knowledge Stream</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation (About Us is highlighted) -->
+                <nav class="hidden md:flex space-x-8 text-lg font-medium">
+                    <a href="index.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Courses</a>
+                    <a href="mentors.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Mentors</a>
+                    <a href="features.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Features</a>
+                    <a href="resources.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Resources</a>
+                    <a href="funding.html" class="text-gray-300 hover:text-accent-gold transition duration-300 pb-1">Funding</a>
+                    <a href="about.html" class="text-accent-gold border-b-2 border-accent-gold transition duration-300 pb-1">About Us</a>
+                </nav>
+
+                <!-- CTA -->
+                <button class="hidden md:block bg-accent-gold text-primary-dark py-2 px-6 rounded-full font-bold shadow-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                    Start Learning
+                </button>
+                
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-6 py-12 md:py-16 space-y-20">
+
+            <!-- Hero Section: The Story -->
+            <section class="text-center animate-fade-in-up">
+                <p class="text-lg font-medium text-funding-purple mb-3 tracking-widest uppercase">Our Core Belief</p>
+                <h2 class="text-5xl md:text-6xl font-black mb-6 text-gray-100 hero-title-clean">
+                    Building the Future of Knowledge, Together
+                </h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    EduSankalp was founded on the principle that quality education should be a universal right, not a privilege. Meet the passionate five-member team dedicated to making this vision a reality.
+                </p>
+            </section>
+
+            <!-- Team Section -->
+            <section class="animate-fade-in-up" style="animation-delay: 0.3s;">
+                <h3 class="text-3xl font-bold text-accent-gold mb-12 text-center border-b border-accent-gold/50 pb-2 max-w-xl mx-auto">
+                    <i data-lucide="users-2" class="inline-block w-7 h-7 mr-3 text-funding-purple"></i> The Founding Team of Five
+                </h3>
+
+                <!-- Team Grid (5 columns for desktop, responsive down to 1) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-7xl mx-auto">
+
+                    <!-- Member 1: Leadership -->
+                    <div class="glass-card p-6 text-center space-y-3 shadow-xl transform hover:scale-[1.05] transition duration-300">
+                        <img src="https://placehold.co/150x150/8b5cf6/ffffff?text=CEO" alt="Team Member Photo" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-accent-gold/50">
+                        <p class="text-2xl font-bold text-gray-100">Ravi Shankar</p>
+                        <p class="text-sm font-medium text-accent-gold">Chief Executive Officer</p>
+                        <p class="text-xs text-gray-400">Drives the strategic vision and partnership development. Expertise in EdTech scalability.</p>
+                    </div>
+
+                    <!-- Member 2: Technology -->
+                    <div class="glass-card p-6 text-center space-y-3 shadow-xl transform hover:scale-[1.05] transition duration-300">
+                        <img src="https://placehold.co/150x150/1f2937/ffffff?text=CTO" alt="Team Member Photo" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-accent-gold/50">
+                        <p class="text-2xl font-bold text-gray-100">Priya Sharma</p>
+                        <p class="text-sm font-medium text-accent-gold">Chief Technology Officer</p>
+                        <p class="text-xs text-gray-400">Leads all product development, AI integration, and platform architecture.</p>
+                    </div>
+
+                    <!-- Member 3: Content -->
+                    <div class="glass-card p-6 text-center space-y-3 shadow-xl transform hover:scale-[1.05] transition duration-300">
+                        <img src="https://placehold.co/150x150/f59e0b/1f2937?text=Content" alt="Team Member Photo" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-accent-gold/50">
+                        <p class="text-2xl font-bold text-gray-100">Ali Khan</p>
+                        <p class="text-sm font-medium text-accent-gold">Head of Curriculum</p>
+                        <p class="text-xs text-gray-400">Oversees quality control and expansion of educational content globally.</p>
+                    </div>
+                    
+                    <!-- Member 4: Operations -->
+                    <div class="glass-card p-6 text-center space-y-3 shadow-xl transform hover:scale-[1.05] transition duration-300">
+                        <img src="https://placehold.co/150x150/8b5cf6/ffffff?text=COO" alt="Team Member Photo" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-accent-gold/50">
+                        <p class="text-2xl font-bold text-gray-100">Jasmine Kaur</p>
+                        <p class="text-sm font-medium text-accent-gold">Chief Operating Officer</p>
+                        <p class="text-xs text-gray-400">Manages day-to-day operations, logistics, and resource allocation.</p>
+                    </div>
+                    
+                    <!-- Member 5: Community/Support -->
+                    <div class="glass-card p-6 text-center space-y-3 shadow-xl transform hover:scale-[1.05] transition duration-300">
+                        <img src="https://placehold.co/150x150/1f2937/ffffff?text=CMO" alt="Team Member Photo" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-accent-gold/50">
+                        <p class="text-2xl font-bold text-gray-100">David Gonsalves</p>
+                        <p class="text-sm font-medium text-accent-gold">Head of Outreach</p>
+                        <p class="text-xs text-gray-400">Focuses on user acquisition, community building, and student feedback loops.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Values Section -->
+            <section class="animate-fade-in-up pt-10" style="animation-delay: 0.6s;">
+                <h3 class="text-3xl font-bold text-funding-purple mb-10 text-center border-b border-funding-purple/50 pb-2 max-w-2xl mx-auto">
+                    <i data-lucide="heart-handshake" class="inline-block w-7 h-7 mr-3 text-accent-gold"></i> Our Core Values
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="glass-card p-6 space-y-2">
+                        <i data-lucide="globe" class="w-8 h-8 text-accent-gold mb-2"></i>
+                        <h4 class="text-xl font-bold text-gray-100">Inclusion</h4>
+                        <p class="text-sm text-gray-400">Education must be accessible to every demographic, regardless of language or background.</p>
+                    </div>
+                    <div class="glass-card p-6 space-y-2">
+                        <i data-lucide="lightbulb" class="w-8 h-8 text-accent-gold mb-2"></i>
+                        <h4 class="text-xl font-bold text-gray-100">Innovation</h4>
+                        <p class="text-sm text-gray-400">We constantly seek cutting-edge technology to personalize and enhance the learning experience.</p>
+                    </div>
+                    <div class="glass-card p-6 space-y-2">
+                        <i data-lucide="check-circle" class="w-8 h-8 text-accent-gold mb-2"></i>
+                        <h4 class="text-xl font-bold text-gray-100">Excellence</h4>
+                        <p class="text-sm text-gray-400">We maintain the highest standards in curriculum development and mentor quality.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer (Simple) -->
+        <footer class="mt-16 py-8 px-6 text-center text-gray-500 bg-black/30">
+            &copy; 2025 EduSankalp. The backbone of knowledge.
+        </footer>
+
+    </div> 
+
+    <!-- Main JavaScript Logic (Background) -->
+    <script>
+        // Initialize Lucide Icons 
+        lucide.createIcons();
+
+        // --- BACKGROUND GENERATOR LOGIC (The Clean Cosmic Canvas) ---
+        const charsContainer = document.getElementById('floating-chars-container');
+        
+        // Comprehensive list of English alphabet and various Indian/South Asian scripts
+        const characters = [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            'க', 'அ', 'ட', 'த', 'ந', 'ர', 'ழ', 'ய', 'ல', 'ற', 'ன', 
+            'ا', 'ب', 'خ', 'ث', 'ص', 'ط', 'ع', 'ف', 'م', 'ل', 'ي', 'ش', 
+            'अ', 'ख', 'ग', 'घ', 'इ', 'ऋ', 'औ', 'ण', 'स', 'ह', 'ज', 'ट', 
+            '५', 'চ', 'ণ', 'ষ', 'ঞ', 'ঢ়', 'হ', 'ল', 'ক', 'ম', 'ব', 'য' 
+        ];
+
+        const numChars = 150; 
+        const animations = ['floating-char-anim-1', 'floating-char-anim-2']; 
+
+        for (let i = 0; i < numChars; i++) {
+            const char = characters[Math.floor(Math.random() * characters.length)];
+            const animationName = animations[Math.floor(Math.random() * animations.length)];
+            const animationDuration = (18 + Math.random() * 25) + 's'; 
+            const animationDelay = (Math.random() * -40) + 's'; 
+            
+            const fontSize = (2 + Math.random() * 2) + 'rem'; 
+
+            const div = document.createElement('div');
+            div.classList.add('floating-char', animationName);
+            div.textContent = char;
+            
+            div.style.left = (Math.random() * 100) + 'vw';
+            div.style.top = (Math.random() * 100) + 'vh';
+            
+            div.style.animationDuration = animationDuration;
+            div.style.animationDelay = animationDelay;
+            div.style.fontSize = fontSize;
+            
+            div.style.opacity = (0.10 + Math.random() * 0.25).toFixed(2); 
+
+            if (Math.random() > 0.5) {
+                div.style.filter = `blur(${3 + Math.random() * 3}px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.1))`;
+            }
+            
+            charsContainer.appendChild(div);
+        }
+        // --- END BACKGROUND GENERATOR LOGIC ---
+        
+    </script>
+</body>
+</html>
